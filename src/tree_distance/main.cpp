@@ -55,18 +55,31 @@ int main(int argc, char** argv) {
     // Initialise ZS algorithm.
     ted::APTEDTreeIndex<CostModel, node::TreeIndexAll> apted_algorithm(ucm);
 
+    // Empty reference tree
+    const node::Node<Label> t0 = bnp.parse_single("{0 %%% 0}");
+
     // Initialise two tree indexes.
     // Use TreeIndexAll that is a superset of all algorithms' indexes.
+    node::TreeIndexAll ti0;
     node::TreeIndexAll ti1;
     node::TreeIndexAll ti2;
+
     // Index input trees.
+    node::index_tree(ti0, t0, ld, ucm);
     node::index_tree(ti1, t1, ld, ucm);
     node::index_tree(ti2, t2, ld, ucm);
 
     ted_algorithm = &apted_algorithm;
     // Execute the algorithm.
+
+    double n1 = ted_algorithm->ted(ti0, ti1);
+    double n2 = ted_algorithm->ted(ti0, ti2);
     double computed_results = ted_algorithm->ted(ti1, ti2);
-    std::cout << "TED result: " << computed_results << std::endl;
+    if (n1 + n2 > 0) {
+        computed_results = computed_results / (n1 + n2);
+    }
+
+    std::cout << "Normalized TED: " << computed_results << std::endl;
 
     return 0;
 }
