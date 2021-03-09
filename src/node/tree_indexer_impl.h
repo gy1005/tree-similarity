@@ -180,7 +180,7 @@ int index_tree_recursion(TreeIndex& ti, const node::Node<Label>& n,
   int desc_sum = 0;
 
   // Stores the current node's label id.
-  int label_id = ld.insert(n.label());
+  std::pair<int, int> label_id = ld.insert(n.label());
 
   // Here, start_preorder holds this node's preorder id.
   

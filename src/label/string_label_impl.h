@@ -26,16 +26,24 @@
 
 #pragma once
 
-StringLabel::StringLabel(const std::string& label) : label_(label) {}
+StringLabel::StringLabel(const std::string& label, int weight) : label_(label), weight_(weight) {}
 
 // const std::string& StringLabel::label() const {
 //   return label_;
 // }
 
 bool StringLabel::operator==(const StringLabel& other) const {
-  return (label_.compare(other.to_string()) == 0);
+  return (label_.compare(other.get_label()) == 0);
+}
+
+const std::string& StringLabel::get_label() const {
+  return label_;
 }
 
 const std::string& StringLabel::to_string() const {
-  return label_;
+    return label_;
+}
+
+int StringLabel::get_weight() const {
+    return weight_;
 }

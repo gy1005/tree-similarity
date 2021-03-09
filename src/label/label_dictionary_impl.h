@@ -30,7 +30,7 @@ template<class Label>
 LabelDictionary<Label>::LabelDictionary() : labels_count_(0) {}
 
 template<class Label>
-int LabelDictionary<Label>::insert(const Label& l) {
+std::pair<int, int> LabelDictionary<Label>::insert(const Label& l) {
   // Try to insert the given label with labels_count as its id value.
   // If the label is already in the dictionary, it (and its id) will not be
   // overwritten.
@@ -41,7 +41,7 @@ int LabelDictionary<Label>::insert(const Label& l) {
     ++labels_count_;
   }
   // Return the id of the given label.
-  return label_in_dictionary.first->second;
+  return std::pair<int, int> {label_in_dictionary.first->second, l.get_weight()};
 }
 
 template<class Label>

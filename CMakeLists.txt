@@ -61,8 +61,8 @@ target_include_directories(TreeSimilarity INTERFACE
 )
 
 # For using add_test().
-include(CTest)
+#include(CTest)
 
 # Let CMake know about subdirectories.
 add_subdirectory(src/)
-add_subdirectory(test/)
+#add_subdirectory(test/)

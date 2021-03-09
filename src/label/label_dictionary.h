@@ -30,6 +30,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <utility>
 
 namespace label {
 
@@ -53,8 +54,8 @@ public:
   /// in dictionary, it is inserted, and its id is returned.
   ///
   /// \param l A label to insert.
-  /// \return The id of the given label.
-  int insert(const Label& l);
+  /// \return The id and weight of the given label.
+  std::pair<int, int> insert(const Label& l);
   /// Removes all elements from the dictionary.
   /// Resets labels_count_ to 0;
   void clear();

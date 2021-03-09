@@ -467,21 +467,21 @@ double APTEDTreeIndex<CostModel, TreeIndex>::spf1(const TreeIndex& t1,
   int subtreeSize1 = t1.prel_to_size_[subtreeRootNode1];
   int subtreeSize2 = t2.prel_to_size_[subtreeRootNode2];
   if (subtreeSize1 == 1 && subtreeSize2 == 1) {
-    int label1 = t1.prel_to_label_id_[subtreeRootNode1];
-    int label2 = t2.prel_to_label_id_[subtreeRootNode2];
+    std::pair<int, int> label1 = t1.prel_to_label_id_[subtreeRootNode1];
+    std::pair<int, int> label2 = t2.prel_to_label_id_[subtreeRootNode2];
     double maxCost = c_.del(label1) + c_.ins(label2);
     double renCost = c_.ren(label1, label2);
     // std::cout << "spf1 = " << (renCost < maxCost ? renCost : maxCost) << std::endl;
     return renCost < maxCost ? renCost : maxCost;
   }
   if (subtreeSize1 == 1) {
-    int label1 = t1.prel_to_label_id_[subtreeRootNode1];
+    std::pair<int, int> label1 = t1.prel_to_label_id_[subtreeRootNode1];
     double cost = t2.prel_to_subtree_ins_cost_[subtreeRootNode2];
     double maxCost = cost + c_.del(label1);
     double minRenMinusIns = cost;
     double nodeRenMinusIns = 0;
     for (int i = subtreeRootNode2; i < subtreeRootNode2 + subtreeSize2; ++i) {
-      int label2 = t2.prel_to_label_id_[i];
+      std::pair<int, int> label2 = t2.prel_to_label_id_[i];
       nodeRenMinusIns = c_.ren(label1, label2) - c_.ins(label2);
       if (nodeRenMinusIns < minRenMinusIns) {
         minRenMinusIns = nodeRenMinusIns;
@@ -492,13 +492,13 @@ double APTEDTreeIndex<CostModel, TreeIndex>::spf1(const TreeIndex& t1,
     return cost < maxCost ? cost : maxCost;
   }
   if (subtreeSize2 == 1) {
-    int label2 = t2.prel_to_label_id_[subtreeRootNode2];
+    std::pair<int, int> label2 = t2.prel_to_label_id_[subtreeRootNode2];
     double cost = t1.prel_to_subtree_del_cost_[subtreeRootNode1];
     double maxCost = cost + c_.ins(label2);
     double minRenMinusDel = cost;
     double nodeRenMinusDel = 0;
     for (int i = subtreeRootNode1; i < subtreeRootNode1 + subtreeSize1; ++i) {
-      int label1 = t1.prel_to_label_id_[i];
+      std::pair<int, int> label1 = t1.prel_to_label_id_[i];
       nodeRenMinusDel = c_.ren(label1, label2) - c_.del(label1);
       if (nodeRenMinusDel < minRenMinusDel) {
         minRenMinusDel = nodeRenMinusDel;
@@ -517,7 +517,7 @@ double APTEDTreeIndex<CostModel, TreeIndex>::spfA(const TreeIndex& t1,
     int t1_current_subtree, const TreeIndex& t2,
     int t2_current_subtree, int pathID, int pathType,
     bool treesSwapped) {
-  const std::vector<int>& it2labels = t2.prel_to_label_id_;
+  const std::vector<std::pair<int, int>>& it2labels = t2.prel_to_label_id_;
   // const node::Node<Label>& lFNode;
   const std::vector<int>& it1sizes = t1.prel_to_size_;
   const std::vector<int>& it2sizes = t2.prel_to_size_;
@@ -650,7 +650,7 @@ double APTEDTreeIndex<CostModel, TreeIndex>::spfA(const TreeIndex& t1,
           if (lF == lFlast && !rightPart) {
             rF = rFlast;
           }
-          const int lFNode_label = t1.prel_to_label_id_[lF];
+          const std::pair<int, int> lFNode_label = t1.prel_to_label_id_[lF];
           // Increment size and cost of F forest by node lF.
           ++currentForestSize1;
           currentForestCost1 += (treesSwapped ? c_.ins(lFNode_label) : c_.del(lFNode_label)); // TODO: USE COST MODEL - sum up deletion cost of a forest.
@@ -881,7 +881,7 @@ double APTEDTreeIndex<CostModel, TreeIndex>::spfA(const TreeIndex& t1,
             rFIsRightSiblingOfCurrentPathNode = false;
           }
           fForestIsTree = rF_in_preL == lF;
-          const int rFNode_label = t1.prel_to_label_id_[rF_in_preL];
+          const std::pair<int, int> rFNode_label = t1.prel_to_label_id_[rF_in_preL];
           sp1spointer = (rF + 1) - it1PreRoff;//s[(rF + 1) - it1PreRoff];
           sp2spointer = rF - it1PreRoff;//s[rF - it1PreRoff];
           sp3spointer = 0;//s[0];

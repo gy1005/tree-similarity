@@ -45,22 +45,22 @@ UnitCostModelLD<Label>::UnitCostModelLD(label::LabelDictionary<Label>& ld) :
     ld_(ld) {}
 
 template <typename Label>
-double UnitCostModelLD<Label>::ren(const int label_id_1,
-    const int label_id_2) const {
-  if (label_id_1 == label_id_2) {
+double UnitCostModelLD<Label>::ren(const std::pair<int, int> & label_id_1,
+    const std::pair<int, int> & label_id_2) const {
+  if (label_id_1.first == label_id_2.first) {
     return 0.0;
   }
-  return 1.0;
+  return 1.0 * (label_id_1.second + label_id_2.second);
 }
 
 // Argument's name deleted because not used.
 template <typename Label>
-double UnitCostModelLD<Label>::del(const int) const {
-  return 1.0;
+double UnitCostModelLD<Label>::del(const std::pair<int, int> &label_id_1) const {
+  return 1.0 * label_id_1.second;
 }
 
 // Argument's name deleted because not used.
 template <typename Label>
-double UnitCostModelLD<Label>::ins(const int) const {
-  return 1.0;
+double UnitCostModelLD<Label>::ins(const std::pair<int, int> &label_id_1) const {
+  return 1.0 * label_id_1.second;
 }

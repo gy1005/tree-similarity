@@ -44,7 +44,7 @@ class Constants {
  * Indexed in left-to-right preorder.
  */
 class PreLToLabelId {
-  public: std::vector<int> prel_to_label_id_;
+public: std::vector<std::pair<int, int>> prel_to_label_id_;
 };
 
 /// Stores label id of each node in a tree.
@@ -54,7 +54,7 @@ class PreLToLabelId {
  * Indexed in left-to-right postorder.
  */
 class PostLToLabelId {
-  public: std::vector<int> postl_to_label_id_;
+  public: std::vector<std::pair<int, int>> postl_to_label_id_;
 };
 
 /// Stores label id of each node in a tree.
@@ -64,7 +64,7 @@ class PostLToLabelId {
  * Indexed in right-to-left postorder.
  */
 class PostRToLabelId {
-  public: std::vector<int> postr_to_label_id_;
+  public: std::vector<std::pair<int, int>> postr_to_label_id_;
 };
 
 /// Stores subtree size of each node in a tree.
@@ -313,8 +313,18 @@ class InvertedListDepthToPostL {
  * The postorder ids of nodes carrying a specific label are stored in a
  * vector.
  */
+
+struct pair_hash
+{
+    template <class T1, class T2>
+    std::size_t operator() (const std::pair<T1, T2> &pair) const
+    {
+        return std::hash<T1>()(pair.first) ^ std::hash<T2>()(pair.second);
+    }
+};
+
 class InvertedListLabelIdToPostL {
-  public: std::unordered_map<int, std::vector<int>> inverted_list_label_id_to_postl_;
+public: std::unordered_map<std::pair<int, int>, std::vector<int>, pair_hash> inverted_list_label_id_to_postl_;
 };
 
 /// Tree index for Zhangh and Shasha algorithm.

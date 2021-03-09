@@ -1,3 +1,4 @@
+
 // The MIT License (MIT)
 // Copyright (c) 2017 Mateusz Pawlik, Nikolaus Augsten, and Daniel Kocher.
 //
@@ -23,7 +24,6 @@
 ///
 /// \details
 /// Contains the implementation of the BracketNotationParser class.
-
 #pragma once
 
 /// This is currently a copy of the previous version but with the efficient
@@ -46,7 +46,10 @@ node::Node<BracketNotationParser::Label> BracketNotationParser::parse_single(
   } else { // Non-empty label.
     ++tokens_begin; // Advance tokens.
   }
-  Label root_label(match_str);
+
+  std::vector<std::string> match_str_vec;
+  boost::algorithm::split_regex(match_str_vec, match_str, boost::regex(" %%% "));
+  Label root_label(match_str_vec[0], stoi(match_str_vec[1]));
   node::Node<Label> root(root_label);
   node_stack.push_back(std::ref(root));
 
@@ -66,7 +69,9 @@ node::Node<BracketNotationParser::Label> BracketNotationParser::parse_single(
       }
 
       // Create new node.
-      Label node_label(match_str);
+      std::vector<std::string> match_str_vec;
+      boost::algorithm::split_regex(match_str_vec, match_str, boost::regex(" %%% "));
+      Label node_label(match_str_vec[0], stoi(match_str_vec[1]));
       node::Node<Label> n(node_label);
 
       // Move n to become a child.

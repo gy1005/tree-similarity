@@ -49,7 +49,7 @@ namespace label {
 /// one wants to use a specialized cost model.
 class StringLabel {
 public:
-    StringLabel(const std::string& label);
+    StringLabel(const std::string& label, int weight);
 
     /// Operator overloadings.
     /// @{
@@ -59,11 +59,14 @@ public:
     /// Generates a string representation of the label.
     ///
     /// \return String representation of the label.
-    const std::string& to_string() const;
+    [[nodiscard]] const std::string& to_string() const;
+    [[nodiscard]] const std::string& get_label() const;
+    [[nodiscard]] int get_weight() const;
 
 private:
     /// The label to be associated with a node.
     std::string label_{};
+    int weight_{1};
 };
 
 // Implementation details
