@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
         computed_results = computed_results / (n1 + n2);
     }
 
-    std::cout << "Normalized TED: " << computed_results << std::endl;
+    std::cout << computed_results << std::endl;
 
     return 0;
 }
